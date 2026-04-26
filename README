@@ -30,6 +30,60 @@ Parâmetros principais:
 - `--tracks`: número de pistas MIDI de 1 a 12
 - `--seed`: valor numérico para gerar variações diferentes ou repetir o mesmo resultado
 
+## Tutorial para iniciantes
+
+1. **Baixe o projeto**
+   - Se estiver no GitHub Codespace, já está dentro do projeto.
+   - Se estiver local, clone o repositório:
+     ```bash
+git clone https://github.com/sobrinhocdg/devil-heroin.git
+cd devil-heroin
+```
+
+2. **Instale as dependências**
+   - Use Python 3 e instale os pacotes necessários:
+     ```bash
+python3 -m pip install -r requirements.txt
+```
+
+3. **Gere o seu MIDI**
+   - Execute o gerador com os parâmetros básicos:
+     ```bash
+python3 midi_generator.py --title "meu_release" --tempo 60 --bars 32 --tracks 8
+```
+   - O arquivo será salvo na pasta `releases/`.
+
+4. **Use a interface web (opcional)**
+   - Inicie o servidor web:
+     ```bash
+python3 web_server.py
+```
+   - Abra no navegador:
+     ```bash
+http://127.0.0.1:5000
+```
+   - Preencha o título, tempo, compassos, número de tracks e clique em "Gerar MIDI".
+   - Baixe o arquivo gerado com um clique.
+
+5. **Importe no FL Studio**
+   - Abra o FL Studio.
+   - Vá em `File > Import > MIDI file` e selecione o arquivo gerado.
+   - O MIDI será carregado no Channel Rack com várias pistas.
+
+6. **Prepare o release**
+   - Atribua sintetizadores sombrios para cada pista:
+     - Pads escuros, Leads com filtro baixo, Basses graves, Choirs e Bells leves.
+   - Use efeitos como `reverb`, `delay`, `chorus` e `phaser` para criar ambiência.
+   - Trabalhe a mixagem:
+     - Deixe o drone/pad com volume mais baixo e espaço.
+     - Destaque o bass e a melodia principal.
+   - Ajuste o `tempo` e a `posição` dos clips no Playlist para formar a estrutura do release.
+
+7. **Exporte o seu release**
+   - Escolha o formato desejado (WAV/MP3).
+   - Exporte no FL Studio com `File > Export`.
+   - Dê nome ao arquivo e use qualidade alta para som mais pesado.
+
 ## Exemplo
 
 ```bash
