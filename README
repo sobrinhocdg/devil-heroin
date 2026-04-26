@@ -128,7 +128,11 @@ O arquivo `RELEASE_v33.bat` foi criado para usuários Windows.
 - Instala automaticamente as dependências do `requirements.txt`.
 - Abre o servidor web e a página do gerador.
 
-> No Windows, execute o `.bat` a partir da pasta do projeto para que o servidor e o acesso ao arquivo funcione corretamente.
+Também há um pacote ZIP pronto para download:
+
+- `afterrelease33_release_v33.zip`
+
+> No Windows, extraia o ZIP em uma pasta e execute `RELEASE_v33.bat` para iniciar o instalador.
 5. Baixe o arquivo recém-criado diretamente pela página.
 
 ---
