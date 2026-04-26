@@ -1,2 +1,71 @@
+# Dungeon Synth MIDI Generator
 
+Gerador simples de arquivos MIDI focado em `dungeon synth` sombria, feito para criar releases que podem ser carregados no FL Studio com até 12 canais.
 
+## O que ele faz
+
+- Gera arquivos MIDI com compassos lentos e textura sombria
+- Usa escalas menores/modal dark (`aeolian`, `dorian`, `phrygian`, `harmonic_minor`)
+- Cria até 12 faixas instrumentais diferentes para o channel rack
+- Fornece variação entre execuções usando `seed`
+- Salva arquivos em `releases/`
+
+## Instalação
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+## Uso
+
+```bash
+python3 midi_generator.py --title "release_sombrio" --tempo 64 --bars 32 --tracks 10 --seed 12345
+```
+
+Parâmetros principais:
+
+- `--title`: nome do release/MIDI
+- `--tempo`: BPM do projeto (recomendado 50-80)
+- `--bars`: número de compassos
+- `--tracks`: número de pistas MIDI de 1 a 12
+- `--seed`: valor numérico para gerar variações diferentes ou repetir o mesmo resultado
+
+## Exemplo
+
+```bash
+python3 midi_generator.py --title "dungeon_synth_1" --tempo 58 --bars 48 --tracks 12
+```
+
+## Como usar no FL Studio
+
+1. Abra o FL Studio.
+2. Importe o arquivo MIDI gerado (`File > Import > MIDI file`).
+3. Atribua sintetizadores sombrios nos canais do Channel Rack.
+4. Ajuste reverb, delay e filtros para criar ambiência dungeon synth.
+
+## Interface web para gerar e baixar MIDI
+
+1. Instale dependências:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+2. Inicie o servidor web:
+
+```bash
+python3 web_server.py
+```
+
+3. Abra o navegador no endereço:
+
+```bash
+http://127.0.0.1:5000
+```
+
+4. Preencha o título, tempo, compassos, número de tracks e clique em "Gerar MIDI".
+5. Baixe o arquivo recém-criado diretamente pela página.
+
+---
+
+Criado para gerar bases MIDI sombrias e atmosféricas com variação a cada execução.
