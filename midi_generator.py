@@ -213,7 +213,7 @@ def create_midi(title, tempo, bars, tracks_count, seed, output_dir):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Gerador de MIDI dungeon synth para FL Studio (até 12 faixas).')
-    parser.add_argument('--title', default='dungeon_synth_release', help='Nome do release/MIDI file')
+    parser.add_argument('--title', default='afterrelease33', help='Nome do release/MIDI file')
     parser.add_argument('--tempo', type=int, default=60, help='BPM do projeto (50-80 recomendado)')
     parser.add_argument('--bars', type=int, default=32, help='Quantidade de compassos do release')
     parser.add_argument('--tracks', type=int, default=8, choices=range(1, 13), help='Número de tracks (1-12)')

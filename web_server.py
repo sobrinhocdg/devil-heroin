@@ -80,7 +80,7 @@ def list_recent_files(directory, count=10):
 @app.route('/', methods=['GET'])
 def index():
     return render_template_string(HTML_TEMPLATE,
-                                  title='release_sombrio',
+                                  title='afterrelease33',
                                   tempo=64,
                                   bars=32,
                                   tracks=8,
