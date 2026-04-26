@@ -118,6 +118,17 @@ http://127.0.0.1:5000
 ```
 
 4. Preencha o título, tempo, compassos, número de tracks e clique em "Gerar MIDI".
+
+## Release v33
+
+O arquivo `RELEASE_v33.bat` foi criado para usuários Windows.
+
+- Clique em `RELEASE_v33.bat` na pasta do projeto.
+- Ele verifica se o Python está disponível.
+- Instala automaticamente as dependências do `requirements.txt`.
+- Abre o servidor web e a página do gerador.
+
+> No Windows, execute o `.bat` a partir da pasta do projeto para que o servidor e o acesso ao arquivo funcione corretamente.
 5. Baixe o arquivo recém-criado diretamente pela página.
 
 ---
