@@ -11,6 +11,11 @@ MODES = {
     'dorian': [0, 2, 3, 5, 7, 9, 10],
     'phrygian': [0, 1, 3, 5, 7, 8, 10],
     'harmonic_minor': [0, 2, 3, 5, 7, 8, 11],
+    'locrian': [0, 1, 3, 5, 6, 8, 10],
+    'lydian': [0, 2, 4, 6, 7, 9, 11],
+    'mixolydian': [0, 2, 4, 5, 7, 9, 10],
+    'pentatonic_minor': [0, 3, 5, 7, 10],
+    'blues': [0, 3, 5, 6, 7, 10],
 }
 
 DARK_INSTRUMENTS = [
@@ -26,6 +31,37 @@ DARK_INSTRUMENTS = [
     97,  # FX 3 (Crystal)
     113, # FX 9 (Sweep)
     120, # Synth Drum (for subtle percussion-like textures)
+    35,  # Fretless Bass
+    39,  # Synth Bass 2
+    81,  # Lead 3 (Calliope)
+    82,  # Lead 4 (Chiff)
+    83,  # Lead 5 (Charang)
+    84,  # Lead 6 (Voice)
+    85,  # Lead 7 (Fifths)
+    87,  # Lead 8 (Bass + Lead)
+    88,  # Pad 1 (New Age)
+    92,  # Pad 5 (Bowed)
+    94,  # Pad 7 (Halo)
+    95,  # Pad 8 (Sweep)
+    96,  # FX 1 (Rain)
+    98,  # FX 4 (Atmosphere)
+    99,  # FX 5 (Brightness)
+    100, # FX 6 (Goblins)
+    101, # FX 7 (Echoes)
+    102, # FX 8 (Sci-Fi)
+    114, # FX 10 (Bubble)
+    115, # FX 11 (Sawtooth Wave)
+    116, # FX 12 (Varmint)
+    117, # FX 13 (Sequence)
+    118, # FX 14 (Chiffer Lead)
+    119, # FX 15 (Charang)
+    121, # Ethnic (Sitar)
+    122, # Ethnic (Banjo)
+    123, # Ethnic (Shamisen)
+    124, # Ethnic (Koto)
+    125, # Ethnic (Kalimba)
+    126, # Ethnic (Bagpipe)
+    127, # Ethnic (Fiddle)
 ]
 
 NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
@@ -46,8 +82,16 @@ def build_scale(root_note: int, mode: str):
 
 
 def build_progression(scale, length):
-    root = scale[0]
-    chord_pattern = [0, 4, 5, 3, 1]
+    progressions = [
+        [0, 4, 5, 3, 1],  # i - iv - v - iii - I
+        [0, 5, 3, 4, 1],  # i - v - iii - iv - I
+        [0, 2, 5, 3, 4],  # i - ii - v - iii - iv
+        [0, 3, 4, 5, 1],  # i - iii - iv - v - I
+        [0, 1, 4, 5, 3],  # i - i# - iv - v - iii
+        [0, 5, 4, 3, 1],  # i - v - iv - iii - I
+        [0, 2, 3, 5, 4],  # i - ii - iii - v - iv
+    ]
+    chord_pattern = random.choice(progressions)
     progression = []
     for i in range(length):
         idx = chord_pattern[i % len(chord_pattern)]
@@ -68,6 +112,24 @@ def add_track_notes(track, notes, start_tick, duration, velocity=80):
         track.append(Message('note_on', note=note, velocity=velocity, time=start_tick))
         track.append(Message('note_off', note=note, velocity=velocity // 2, time=duration))
         start_tick = 0
+
+
+def generate_rhythm_pattern(bars, beats_per_bar=4):
+    patterns = [
+        [1, 0, 0, 0],  # Whole notes
+        [1, 0, 1, 0],  # Half notes
+        [1, 1, 0, 1],  # Syncopated
+        [1, 0, 0, 1],  # Off-beat
+        [1, 1, 1, 1],  # Quarter notes
+        [1, 0, 1, 1],  # Mixed
+    ]
+    pattern = random.choice(patterns)
+    rhythm = []
+    for bar in range(bars):
+        for beat in range(beats_per_bar):
+            if pattern[beat % len(pattern)]:
+                rhythm.append((bar * beats_per_bar + beat, 1))  # (position, duration in beats)
+    return rhythm
 
 
 def make_counterpoint(scale, base_progression, bars, step, length):
@@ -137,10 +199,13 @@ def create_midi(title, tempo, bars, tracks_count, seed, output_dir):
                 octave_chord = [note + 12 for note in chord]
                 add_track_notes(track, octave_chord[:3], start_tick=0 if bar == 0 else ticks_per_bar, duration=ticks_per_bar, velocity=config['velocity'])
         elif config['pattern'] == 'bass':
-            for bar in range(bars):
+            rhythm = generate_rhythm_pattern(bars)
+            for pos, dur in rhythm:
+                bar = pos // 4
+                beat = pos % 4
                 root_note = progression[bar % len(progression)] - 12
-                track.append(Message('note_on', note=root_note, velocity=config['velocity'], time=0 if bar == 0 else ticks_per_bar))
-                track.append(Message('note_off', note=root_note, velocity=config['velocity'] // 2, time=ticks_per_bar))
+                start_tick = (bar * ticks_per_bar + beat * ticks_per_beat) if bar > 0 or beat > 0 else 0
+                add_track_notes(track, [root_note], start_tick=start_tick, duration=int(dur * ticks_per_beat), velocity=config['velocity'])
         elif config['pattern'] == 'melody':
             for bar in range(bars):
                 chord_root = progression[bar % len(progression)]
@@ -158,12 +223,15 @@ def create_midi(title, tempo, bars, tracks_count, seed, output_dir):
                     track.append(Message('note_on', note=note, velocity=config['velocity'], time=time))
                     track.append(Message('note_off', note=note, velocity=config['velocity'] // 2, time=ticks_per_beat // 2))
         elif config['pattern'] == 'bell':
-            for bar in range(bars):
+            rhythm = generate_rhythm_pattern(bars)
+            for pos, dur in rhythm[:bars]:  # Limit to bars
                 if random.random() < 0.6:
                     note = scale[random.choice([0, 2, 4, 6])] + 12 * 5
-                    time = 0 if bar == 0 else ticks_per_bar
-                    track.append(Message('note_on', note=note, velocity=config['velocity'], time=time))
-                    track.append(Message('note_off', note=note, velocity=config['velocity'] // 2, time=int(ticks_per_bar * 1.5)))
+                    bar = pos // 4
+                    beat = pos % 4
+                    start_tick = (bar * ticks_per_bar + beat * ticks_per_beat) if bar > 0 or beat > 0 else 0
+                    track.append(Message('note_on', note=note, velocity=config['velocity'], time=start_tick))
+                    track.append(Message('note_off', note=note, velocity=config['velocity'] // 2, time=int(dur * ticks_per_beat * 1.5)))
         elif config['pattern'] == 'pad':
             for bar in range(bars):
                 chord_root = progression[bar % len(progression)]
@@ -185,10 +253,14 @@ def create_midi(title, tempo, bars, tracks_count, seed, output_dir):
                 track.append(Message('note_on', note=note, velocity=config['velocity'], time=0 if bar == 0 else ticks_per_bar * 2))
                 track.append(Message('note_off', note=note, velocity=config['velocity'] // 2, time=ticks_per_bar * 4))
         elif config['pattern'] == 'dark_lead':
-            for bar in range(bars):
+            rhythm = generate_rhythm_pattern(bars)
+            for pos, dur in rhythm[:bars*2]:  # More notes
+                bar = pos // 4
+                beat = pos % 4
                 note = scale[(bar * 3 + 1) % len(scale)] + 12 * 5
-                track.append(Message('note_on', note=note, velocity=config['velocity'], time=0 if bar == 0 else ticks_per_bar // 2))
-                track.append(Message('note_off', note=note, velocity=config['velocity'] // 2, time=ticks_per_beat))
+                start_tick = (bar * ticks_per_bar + beat * ticks_per_beat) if bar > 0 or beat > 0 else 0
+                track.append(Message('note_on', note=note, velocity=config['velocity'], time=start_tick))
+                track.append(Message('note_off', note=note, velocity=config['velocity'] // 2, time=int(dur * ticks_per_beat)))
         elif config['pattern'] == 'sweep':
             for bar in range(bars):
                 for i in range(3):

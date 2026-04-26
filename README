@@ -133,6 +133,14 @@ Também há um pacote ZIP pronto para download:
 - `afterrelease33_release_v33.zip`
 
 > No Windows, extraia o ZIP em uma pasta e execute `RELEASE_v33.bat` para iniciar o instalador.
+
+## Presets FL Studio
+
+Veja recomendações de sintetizadores e configurações em [`presets_fl_studio.md`](presets_fl_studio.md).
+
+## Changelog
+
+Veja as mudanças e versões em [`CHANGELOG.md`](CHANGELOG.md).
 5. Baixe o arquivo recém-criado diretamente pela página.
 
 ---
