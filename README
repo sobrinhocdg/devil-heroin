@@ -119,6 +119,17 @@ http://127.0.0.1:5000
 
 4. Preencha o título, tempo, compassos, número de tracks e clique em "Gerar MIDI".
 
+## Download Release v33
+
+[![GitHub Release](https://img.shields.io/github/v/release/sobrinhocdg/devil-heroin)](https://github.com/sobrinhocdg/devil-heroin/releases/tag/v33)
+
+Baixe a versão mais recente: [AfterRelease33 v33](https://github.com/sobrinhocdg/devil-heroin/releases/tag/v33)
+
+O pacote inclui:
+- `afterrelease33_release_v33.zip` - Arquivos completos
+- `RELEASE_v33.bat` - Instalador Windows
+- Scripts Python e documentação
+
 ## Release v33
 
 O arquivo `RELEASE_v33.bat` foi criado para usuários Windows.
